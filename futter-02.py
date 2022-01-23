@@ -18,8 +18,6 @@ momentaryButton = Button(24)
 with open('settings.json') as f:
   settings = json.load(f)
 
-settings["foodWeight"] = 50
-settings["duration_50g"] = 2.25
 feeding = False
 
 def onRotateClockwise():
@@ -29,6 +27,7 @@ def onRotateClockwise():
     if settings["foodWeight"] < 500:
         settings["foodWeight"] += 50
     displayValues()
+    saveSettings()
 
 def onRotateCounterClockwise():
     global settings
@@ -36,6 +35,7 @@ def onRotateCounterClockwise():
     if settings["foodWeight"] > 50:
         settings["foodWeight"] -= 50
     displayValues()
+    saveSettings()
 
 def displayValues():
     print(settings["foodWeight"])
