@@ -1,45 +1,49 @@
 
+
+
 from threading import Event
-from colorzero import Color
-from gpiozero import RotaryEncoder
 import drivers
 from time import sleep
-from gpiozero import Button, DigitalOutputDevice
+import json
+from gpiozero import Button, DigitalOutputDevice, RotaryEncoder
 
 display = drivers.Lcd()
 rotor = RotaryEncoder(16, 20, wrap=False, max_steps=5)
 rotor.steps = 0
 done = Event()
 motor = DigitalOutputDevice(18)
-fullButton = Button(23)
-holdButton = Button(24)
+feedButton = Button(23)
+momentaryButton = Button(24)
 
-weight = 50
-duration_50g = 2.25
+with open('settings.json') as f:
+  settings = json.load(f)
+
+settings["foodWeight"] = 50
+settings["duration_50g"] = 2.25
 feeding = False
 
 def onRotateClockwise():
-    global weight
+    global settings
     print("rotate clockwise")
-    print(weight)
-    if weight < 500:
-        weight += 50
+    print(settings["foodWeight"])
+    if settings["foodWeight"] < 500:
+        settings["foodWeight"] += 50
     displayValues()
 
 def onRotateCounterClockwise():
-    global weight
+    global settings
     print("rotate counter clockwise")
-    if weight > 50:
-        weight -= 50
+    if settings["foodWeight"] > 50:
+        settings["foodWeight"] -= 50
     displayValues()
 
 def displayValues():
-    print(weight)
-    durationFactor = (weight / 50)
+    print(settings["foodWeight"])
+    durationFactor = (settings["foodWeight"] / 50)
     display.lcd_clear()
     display.lcd_display_string("Mahlzeit!", 1)
     display.lcd_display_string("Futterausgabe:", 2)
-    display.lcd_display_string(str(round(weight,2)) + " Gramm (" + str(round(durationFactor * duration_50g,2)) + 's)', 3)
+    display.lcd_display_string(str(round(settings["foodWeight"],2)) + " Gramm (" + str(round(durationFactor * settings["duration_50g"],2)) + 's)', 3)
     if feeding:
         display.lcd_display_string("Fuetterung...",4)
     else:
@@ -48,10 +52,10 @@ def displayValues():
 
 def feed():
     global feeding
-    durationFactor = (weight / 50)
+    durationFactor = (settings["foodWeight"] / 50)
     startFeeding()
     print('feeding started')
-    sleep(duration_50g * durationFactor)
+    sleep(settings["duration_50g"] * durationFactor)
     stopFeeding()
     print('feeding stopped')
 
@@ -69,13 +73,17 @@ def stopFeeding():
     displayValues()
     print('feeding stopped')
 
+def saveSettings():
+    with open('settings.json', 'w') as f:
+        json.dump(settings, f, indent=2)
+
 
 rotor.when_rotated_clockwise = onRotateClockwise
 rotor.when_rotated_counter_clockwise = onRotateCounterClockwise
 
-fullButton.when_pressed = feed
-holdButton.when_pressed = startFeeding
-holdButton.when_released = stopFeeding
+feedButton.when_pressed = feed
+momentaryButton.when_pressed = startFeeding
+momentaryButton.when_released = stopFeeding
 
 displayValues()
 
