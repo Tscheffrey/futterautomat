@@ -16,10 +16,10 @@ class Feeder:
         (Timer(2.0, self.stopFeeding)).start()
 
     def startFeeding(self):
-        print('startFeeding')
         if not self.isFeeding:
-          self.motor.on()
-          self.isFeeding = True
+            print('startFeeding')
+            self.motor.on()
+            self.isFeeding = True
 
     def stopFeeding(self):
         print('stopFeeding')

@@ -11,7 +11,17 @@ def hello_world():
     return redirect('/app/index.html')
 
 
-@app.route("/api/feed")
-def feed():
+@app.route("/api/feed-once")
+def feedOnce():
     f.feedOnce()
+    return jsonify({'success': True})
+
+@app.route("/api/start-feeding")
+def startFeeding():
+    f.startFeeding()
+    return jsonify({'success': True})
+
+@app.route("/api/stop-feeding")
+def stopFeeding():
+    f.stopFeeding()
     return jsonify({'success': True})
