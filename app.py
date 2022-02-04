@@ -2,13 +2,13 @@ from flask import Flask, redirect, jsonify
 
 from Feeder import *
 
-app = Flask(__name__, static_folder = 'dist', static_url_path = '/app')
+app = Flask(__name__, static_folder = 'dist', static_url_path = '/')
 
 feeder = Feeder(18, 23, 24, 16, 20)
 
 @app.route("/")
 def hello_world():
-    return redirect('/app/index.html')
+    return redirect('/index.html')
 
 
 @app.route("/api/feed-once")
