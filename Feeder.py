@@ -9,6 +9,7 @@ class Feeder:
     maxFeedingAmount = 700
     minFeedingAmount = 50
     durationPerGram = 0.046
+    timer = None
 
     def __init__(self, motorPin, feedButtonPin, momentaryButtonPin, rotorPin1, rotorPin2):
         self.motor = DigitalOutputDevice(motorPin)
@@ -36,7 +37,10 @@ class Feeder:
     def feedOnce(self):
         print('feedOnce')
         self.startFeeding()
-        (Timer(self.feedingDuration, self.stopFeeding)).start()
+        if self.timer:
+            self.timer.cancel()
+        self.timer = Timer(self.feedingDuration, self.stopFeeding)
+        self.timer.start()
 
     def startFeeding(self):
         if not self.isFeeding:
