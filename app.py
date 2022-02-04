@@ -4,7 +4,7 @@ from Feeder import *
 
 app = Flask(__name__, static_folder = 'dist', static_url_path = '/app')
 
-feeder = Feeder(18, 23, 24)
+feeder = Feeder(18, 23, 24, 16, 20)
 
 @app.route("/")
 def hello_world():
