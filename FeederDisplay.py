@@ -13,7 +13,7 @@ class FeederDisplay:
     display.lcd_clear()
     display.lcd_display_string("Mahlzeit!", 1)
     display.lcd_display_string("Futterausgabe:", 2)
-    display.lcd_display_string(str(round(feeder.feedingAmount)) + ' Gramm', 3)
+    display.lcd_display_string(str(round(feeder.feedingAmount)) + " Gramm (" + str(round(feeder.feedingDuration,2)) + 's)', 3)
 
     if feeder.isFeeding:
         display.lcd_display_string("Fuetterung...",4)
