@@ -4,7 +4,7 @@ from Feeder import *
 
 app = Flask(__name__, static_folder = 'dist', static_url_path = '/app')
 
-f = Feeder(18)
+feeder = Feeder(18, 23, 24)
 
 @app.route("/")
 def hello_world():
@@ -13,15 +13,15 @@ def hello_world():
 
 @app.route("/api/feed-once")
 def feedOnce():
-    f.feedOnce()
+    feeder.feedOnce()
     return jsonify({'success': True})
 
 @app.route("/api/start-feeding")
 def startFeeding():
-    f.startFeeding()
+    feeder.startFeeding()
     return jsonify({'success': True})
 
 @app.route("/api/stop-feeding")
 def stopFeeding():
-    f.stopFeeding()
+    feeder.stopFeeding()
     return jsonify({'success': True})

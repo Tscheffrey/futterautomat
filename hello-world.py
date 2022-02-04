@@ -1,5 +1,5 @@
 from Feeder import *
 
-f = Feeder(18)
+feeder = Feeder(18, 23, 24)
 
-f.feedOnce()
+feeder.feedOnce()
