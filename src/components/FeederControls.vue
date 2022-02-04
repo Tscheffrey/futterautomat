@@ -6,7 +6,6 @@
     <button
       @mousedown="startFeeding"
       @mouseup="stopFeeding"
-      @mouseout="stopFeeding"
     >
       Füttern (toggle)
     </button>
